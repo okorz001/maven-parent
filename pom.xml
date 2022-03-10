@@ -1,0 +1,669 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Prevent default appending of paths with artifactId, see: https://issues.apache.org/jira/browse/MNG-6059 -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         child.project.url.inherit.append.path="false">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.korz</groupId>
+  <artifactId>maven-parent</artifactId>
+  <version>1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>korz.org Maven Parent</name>
+  <description>Maven Parent POM for korz.org Projects</description>
+  <inceptionYear>2021</inceptionYear>
+
+  <!-- Most things should be configured by properties to allow easier overriding in child projects. -->
+  <properties>
+    <!-- These were never added to the POM so we must use these special properties. -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <project.scm.id>${github.server}</project.scm.id>
+
+    <!-- GitHub -->
+    <github.server>github</github.server>
+    <github.host>github.com</github.host>
+    <github.owner>okorz001</github.owner>
+    <github.repo>${project.artifactId}</github.repo>
+    <github.url>https://${github.host}/${github.owner}/${github.repo}</github.url>
+    <github.tags>${github.url}/tags</github.tags>
+    <github.releases>${github.url}/releases</github.releases>
+    <github.issues>${github.url}/issues</github.issues>
+    <github.actions>${github.url}/actions</github.actions>
+    <github.pages>https://${github.owner}.github.io/${github.repo}</github.pages>
+
+    <!-- OSSRH -->
+    <ossrh.server>ossrh</ossrh.server>
+    <ossrh.host>s01.oss.sonatype.org</ossrh.host>
+
+    <!-- Essential requirements. -->
+    <java.version>11</java.version>
+    <maven.version>3.8.4</maven.version>
+
+    <!-- Core Maven Plugins -->
+    <maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
+    <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
+    <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
+    <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
+    <maven-compiler-plugin.version>3.10.0</maven-compiler-plugin.version>
+    <maven-dependency-plugin.version>3.2.0</maven-dependency-plugin.version>
+    <maven-deploy-plugin.version>3.0.0-M2</maven-deploy-plugin.version>
+    <maven-enforcer-plugin.version>3.0.0</maven-enforcer-plugin.version>
+    <maven-fluido-skin.version>1.10.0</maven-fluido-skin.version>
+    <maven-failsafe-plugin.version>${maven-surefire-plugin.version}</maven-failsafe-plugin.version>
+    <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
+    <maven-help-plugin.version>3.2.0</maven-help-plugin.version>
+    <maven-install-plugin.version>3.0.0-M1</maven-install-plugin.version>
+    <maven-invoker-plugin.version>3.2.2</maven-invoker-plugin.version>
+    <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
+    <maven-javadoc-plugin.version>3.3.2</maven-javadoc-plugin.version>
+    <maven-project-info-reports-plugin.version>3.2.2</maven-project-info-reports-plugin.version>
+    <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
+    <maven-release-plugin.version>3.0.0-M5</maven-release-plugin.version>
+    <maven-scm-plugin.version>2.0.0-M1</maven-scm-plugin.version>
+    <maven-scm-publish-plugin.version>3.1.0</maven-scm-publish-plugin.version>
+    <maven-site-plugin.version>3.11.0</maven-site-plugin.version>
+    <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+    <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+    <maven-surefire-report-plugin.version>${maven-surefire-plugin.version}</maven-surefire-report-plugin.version>
+    <maven-toolchains-plugin.version>3.0.0</maven-toolchains-plugin.version>
+    <maven-wrapper-plugin.version>3.1.0</maven-wrapper-plugin.version>
+
+    <!-- Third Party Plugins -->
+    <build-helper-maven-plugin.version>3.3.0</build-helper-maven-plugin.version>
+    <dependency-check-maven.version>7.0.0</dependency-check-maven.version>
+    <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
+    <extra-enforcer-rules.version>1.5.1</extra-enforcer-rules.version>
+    <flatten-maven-plugin.version>1.2.7</flatten-maven-plugin.version>
+    <flatten-maven-plugin.mode>ossrh</flatten-maven-plugin.mode>
+    <flatten-maven-plugin.dependency-mode>direct</flatten-maven-plugin.dependency-mode>
+    <jacoco.version>0.8.7</jacoco.version>
+    <jacoco.line-coverage>95%</jacoco.line-coverage>
+    <license-maven-plugin.version>2.0.0</license-maven-plugin.version>
+    <taglist-maven-plugin.version>3.0.0</taglist-maven-plugin.version>
+    <versions-maven-plugin.version>2.9.0</versions-maven-plugin.version>
+  </properties>
+
+  <url>${github.url}</url>
+  <!-- Prevent default appending of paths with artifactId, see: https://issues.apache.org/jira/browse/MNG-6059 -->
+  <scm child.scm.url.inherit.append.path="false"
+       child.scm.developerConnection.inherit.append.path="false"
+       child.scm.connection.inherit.append.path="false">
+    <url>${github.url}</url>
+    <connection>scm:git:${github.url}.git</connection>
+    <developerConnection>scm:git:ssh://git@${github.host}/${github.owner}/${github.repo}.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>${github.issues}</url>
+  </issueManagement>
+  <ciManagement>
+    <system>GitHub Actions</system>
+    <url>${github.actions}</url>
+  </ciManagement>
+  <distributionManagement>
+    <downloadUrl>${github.tags}</downloadUrl>
+    <!-- Prevent default appending of paths with artifactId, see: https://issues.apache.org/jira/browse/MNG-6059 -->
+    <site child.site.url.inherit.append.path="false">
+      <id>${github.server}</id>
+      <name>GitHub Pages</name>
+      <!-- site:deploy won't understand this, but this makes release:perform invoke deploy-site -->
+      <url>${project.scm.developerConnection}</url>
+    </site>
+  </distributionManagement>
+
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://opensource.org/licenses/mit-license.php</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <!-- For rendering copyright in site -->
+  <organization>
+    <name>Oscar Korz</name>
+    <url>https://${github.host}/${github.owner}</url>
+  </organization>
+
+  <developers>
+    <developer>
+      <name>Oscar Korz</name>
+      <email>okorz001@gmail.com</email>
+    </developer>
+  </developers>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+
+        <!-- Core Maven Plugins -->
+
+        <plugin>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>${maven-antrun-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>${maven-assembly-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>${maven-checkstyle-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>${maven-clean-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven-compiler-plugin.version}</version>
+          <configuration>
+            <release>${java.version}</release>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>${maven-dependency-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>${maven-deploy-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>${maven-enforcer-plugin.version}</version>
+          <!-- Isolate each rule so that they are easy to disable in a child project if necessary. -->
+          <executions>
+            <execution>
+              <id>enforce-maven</id>
+              <goals>
+                <goal>enforce</goal>
+              </goals>
+              <configuration>
+                <rules>
+                  <requireMavenVersion>
+                    <version>${maven.version}</version>
+                  </requireMavenVersion>
+                </rules>
+              </configuration>
+            </execution>
+
+            <!-- Prevent property inheritance when it doesn't make sense.
+                 Note that path appending is being suppressed separately. -->
+            <execution>
+              <id>enforce-child-properties</id>
+              <goals>
+                <goal>enforce</goal>
+              </goals>
+              <configuration>
+                <rules>
+                  <requirePropertyDiverges>
+                    <property>project.description</property>
+                    <message>Projects must define their own description to avoid inheriting the parent's.</message>
+                  </requirePropertyDiverges>
+                </rules>
+              </configuration>
+            </execution>
+          </executions>
+          <dependencies>
+            <dependency>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>extra-enforcer-rules</artifactId>
+              <version>${extra-enforcer-rules.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>${maven-failsafe-plugin.version}</version>
+          <configuration>
+            <failIfNoTests>true</failIfNoTests>
+          </configuration>
+          <executions>
+            <execution>
+              <id>integration-test</id>
+              <goals>
+                <goal>integration-test</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>verify</id>
+              <goals>
+                <goal>verify</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>${maven-gpg-plugin.version}</version>
+          <executions>
+            <execution>
+              <id>sign</id>
+              <goals>
+                <goal>sign</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-help-plugin</artifactId>
+          <version>${maven-help-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>${maven-install-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-invoker-plugin</artifactId>
+          <version>${maven-invoker-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${maven-jar-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${maven-javadoc-plugin.version}</version>
+          <configuration>
+            <quiet>true</quiet>
+          </configuration>
+          <executions>
+            <execution>
+              <id>jar</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>${maven-project-info-reports-plugin.version}</version>
+          <configuration>
+            <!-- Don't embed the license, it's a full HTML page not a text file -->
+            <linkOnly>true</linkOnly>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>${maven-release-plugin.version}</version>
+          <configuration>
+            <!-- No need to build twice -->
+            <preparationGoals>clean</preparationGoals>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-scm-plugin</artifactId>
+          <version>${maven-scm-plugin.version}</version>
+        </plugin>
+
+        <!-- Publish site to GitHub Pages. -->
+        <plugin>
+          <artifactId>maven-scm-publish-plugin</artifactId>
+          <version>${maven-scm-publish-plugin.version}</version>
+          <configuration>
+            <serverId>${github.server}</serverId>
+            <scmBranch>gh-pages</scmBranch>
+          </configuration>
+          <executions>
+            <execution>
+              <id>publish-scm</id>
+              <phase>site-deploy</phase>
+              <goals>
+                <goal>publish-scm</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven-resources-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>${maven-site-plugin.version}</version>
+          <executions>
+            <!-- site:deploy still doesn't understand SCM urls. -->
+            <execution>
+              <id>default-deploy</id>
+              <phase>none</phase>
+            </execution>
+            <!-- scm-publish:publish-scm publishes from the staging directory -->
+            <execution>
+              <id>stage</id>
+              <phase>post-site</phase>
+              <goals>
+                <goal>stage</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>attach-descriptor</id>
+              <inherited>false</inherited>
+              <goals>
+                <goal>attach-descriptor</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>${maven-source-plugin.version}</version>
+          <executions>
+            <execution>
+              <id>jar-no-fork</id>
+              <goals>
+                <goal>jar-no-fork</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven-surefire-plugin.version}</version>
+          <configuration>
+            <failIfNoTests>true</failIfNoTests>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-surefire-report-plugin</artifactId>
+          <version>${maven-surefire-report-plugin.version}</version>
+          <configuration>
+            <!-- Skip report when no tests results -->
+            <alwaysGenerateSurefireReport>false</alwaysGenerateSurefireReport>
+            <alwaysGenerateFailsafeReport>false</alwaysGenerateFailsafeReport>
+            <!-- No JXR -->
+            <linkXRef>false</linkXRef>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-toolchains-plugin</artifactId>
+          <version>${maven-toolchains-plugin.version}</version>
+          <executions>
+            <execution>
+              <id>toolchain</id>
+              <goals>
+                <goal>toolchain</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-wrapper-plugin</artifactId>
+          <version>${maven-wrapper-plugin.version}</version>
+          <configuration>
+            <mavenVersion>${maven.version}</mavenVersion>
+          </configuration>
+          <executions>
+            <execution>
+              <id>wrapper</id>
+              <phase>initialize</phase>
+              <goals>
+                <goal>wrapper</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!-- Third Party Plugins -->
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>${build-helper-maven-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>${exec-maven-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>flatten-maven-plugin</artifactId>
+          <version>${flatten-maven-plugin.version}</version>
+          <configuration>
+            <!-- Move flattened POM into build directory so we don't need flatten:clean and ignore rules -->
+            <flattenedPomFilename>flattened-pom.xml</flattenedPomFilename>
+            <outputDirectory>${project.build.directory}</outputDirectory>
+            <flattenMode>${flatten-maven-plugin.mode}</flattenMode>
+            <flattenDependencyMode>${flatten-maven-plugin.dependency-mode}</flattenDependencyMode>
+          </configuration>
+          <executions>
+            <execution>
+              <id>flatten</id>
+              <phase>prepare-package</phase>
+              <goals>
+                <goal>flatten</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>license-maven-plugin</artifactId>
+          <version>${license-maven-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>taglist-maven-plugin</artifactId>
+          <version>${taglist-maven-plugin.version}</version>
+          <configuration>
+            <!-- No JXR -->
+            <linkXRef>false</linkXRef>
+            <!-- Look for TODO -->
+            <tagListOptions>
+              <tagClasses>
+                <tagClass>
+                  <displayName>TODOs</displayName>
+                  <tags>
+                    <tag>
+                      <matchString>TODO</matchString>
+                      <matchType>ignoreCase</matchType>
+                    </tag>
+                  </tags>
+                </tagClass>
+              </tagClasses>
+            </tagListOptions>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>versions-maven-plugin</artifactId>
+          <version>${versions-maven-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>${jacoco.version}</version>
+          <configuration>
+            <rules>
+              <rule>
+                <limits>
+                  <limit>
+                    <counter>LINE</counter>
+                    <minimum>${jacoco.line-coverage}</minimum>
+                  </limit>
+                </limits>
+              </rule>
+            </rules>
+          </configuration>
+          <executions>
+            <execution>
+              <id>prepare-agent</id>
+              <goals>
+                <goal>prepare-agent</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>check</id>
+              <goals>
+                <goal>check</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.owasp</groupId>
+          <artifactId>dependency-check-maven</artifactId>
+          <version>${dependency-check-maven.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <artifactId>maven-enforcer-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-scm-publish-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <!-- Put the index report first. This is the site home page -->
+              <report>index</report>
+              <!-- Project information that could be useful to consumers... maybe -->
+              <report>summary</report>
+              <report>scm</report>
+              <report>issue-management</report>
+              <report>ci-management</report>
+              <!-- Project information that is probably only relevant to developers -->
+              <report>dependencies</report>
+              <report>dependency-management</report>
+              <report>dependency-convergence</report>
+              <report>plugins</report>
+              <report>plugin-management</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>taglist-maven-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>dependency-updates-report</report>
+              <report>plugin-updates-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+
+      <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+        <version>${dependency-check-maven.version}</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>check</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
+
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-gpg-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>github</id>
+      <distributionManagement>
+        <repository>
+          <id>${github.server}</id>
+          <name>GitHub Packages</name>
+          <url>https://maven.pkg.${github.host}/${github.owner}/${github.repo}</url>
+        </repository>
+      </distributionManagement>
+    </profile>
+
+    <profile>
+      <id>ossrh</id>
+      <distributionManagement>
+        <repository>
+          <id>${ossrh.server}</id>
+          <name>OSSRH</name>
+          <url>https://${ossrh.host}/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <snapshotRepository>
+          <id>${ossrh.server}</id>
+          <name>OSSRH Snapshots</name>
+          <url>https://${ossrh.host}/content/repositories/snapshots/</url>
+        </snapshotRepository>
+      </distributionManagement>
+    </profile>
+  </profiles>
+</project>

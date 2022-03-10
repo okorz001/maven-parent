@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/DECORATION/1.8.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/DECORATION/1.8.0 http://maven.apache.org/xsd/decoration-1.8.0.xsd">
+
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>${maven-fluido-skin.version}</version>
+  </skin>
+
+  <custom>
+    <fluidoSkin>
+      <topBarEnabled>false</topBarEnabled>
+      <sideBarEnabled>true</sideBarEnabled>
+      <gitHub>
+        <projectId>${github.owner}/${github.repo}</projectId>
+        <ribbonOrientation>right</ribbonOrientation>
+        <ribbonColor>red</ribbonColor>
+      </gitHub>
+      <sourceLineNumbersEnabled>true</sourceLineNumbersEnabled>
+    </fluidoSkin>
+  </custom>
+
+  <!--
+  Menu inheritance is only useful in aggregate projects, so these menus are deliberately NOT inherited.
+  1) ${project.*} references are not allowed in links.
+  2) relative links are resolved to the parent's site, not the child's.
+  -->
+  <body>
+    <menu ref="reports" inherit="bottom" inheritAsRef="true" />
+  </body>
+</project>
