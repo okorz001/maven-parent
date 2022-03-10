@@ -310,6 +310,8 @@
           <configuration>
             <!-- No need to build twice -->
             <preparationGoals>clean</preparationGoals>
+            <pushChanges>false</pushChanges>
+            <localCheckout>true</localCheckout>
           </configuration>
         </plugin>
 
